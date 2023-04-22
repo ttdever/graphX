@@ -15,10 +15,14 @@ public class TreeAnalyzer {
     }
 
     public static int maxDepth(Node node) {
-        if (node == null) return -1;
+        return node == null ? 0 : calculateNodeDepth(node) - 1;
+    }
 
-        int leftDepth = maxDepth(node.getLeftNode());
-        int rightDepth = maxDepth(node.getRightNode());
+    private static int calculateNodeDepth(Node node) {
+        if (node == null) return 0;
+
+        int leftDepth = calculateNodeDepth(node.getLeftNode());
+        int rightDepth = calculateNodeDepth(node.getRightNode());
 
         return 1 + Math.max(leftDepth, rightDepth);
     }
