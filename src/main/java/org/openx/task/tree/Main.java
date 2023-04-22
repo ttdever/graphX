@@ -7,5 +7,6 @@ public class Main {
     public static void main(String[] args) {
         int[][] array = {{5}, {3, 7}, {2, 5, 1, 0}};
         Node testNode = Node.createFromArray(array);
+        TreeAnalyzer.print(testNode, 0);
     }
 }

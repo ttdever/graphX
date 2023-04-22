@@ -1,35 +1,59 @@
 package org.openx.task.tree.classes;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Node {
 
     private int value;
     private Node leftNode;
     private Node rightNode;
+    private Node parent;
 
     public Node(int value) {
         this.value = value;
     }
 
-    public static Node createFromArray (int[][] array) {
+    public static Node createFromArray(int[][] array) {
+        if (array == null || array.length == 0) {
+            return null;
+        }
+
         Node root = new Node(array[0][0]);
 
-        for(int i = 0; i < array.length - 1; i++) {
-            int[] parentArray = array[i];
-            int[] childArray = array[i + 1];
-            if(parentArray.length != childArray.length / 2) throw new RuntimeException("Wrong array");
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
 
+        int row = 1;
+        while (!queue.isEmpty() && row < array.length) {
+            int count = queue.size();
+            int[] parentArray = array[row - 1];
+            int[] childArray = array[row];
 
-            for(int j = 0; j < parentArray.length; j++) {
-                int childIndex = j == 0 ? 0 : j * 2;
-
-                Node parent = new Node(parentArray[j]);
-                parent.leftNode = new Node(childArray[childIndex]);
-                parent.rightNode = new Node(childArray[childIndex + 1]);
-
-                System.out.println("Parent = " + parent.getValue());
-                System.out.println("Left = " + parent.leftNode.getValue());
-                System.out.println("Right = " + parent.rightNode.getValue() + '\n');
+            if (parentArray.length != count || childArray.length != 2 * count) {
+                throw new IllegalArgumentException("Invalid input array");
             }
+
+            for (int i = 0; i < count; i++) {
+                Node node = queue.poll();
+
+                int leftValue = childArray[i * 2];
+                int rightValue = childArray[i * 2 + 1];
+
+                if (leftValue != -1) {
+                    Node leftNode = new Node(leftValue);
+                    node.setLeftNode(leftNode);
+                    queue.add(leftNode);
+                }
+
+                if (rightValue != -1) {
+                    Node rightNode = new Node(rightValue);
+                    node.setRightNode(rightNode);
+                    queue.add(rightNode);
+                }
+            }
+
+            row++;
         }
 
         return root;
@@ -39,15 +63,12 @@ public class Node {
         return value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
-
     public Node getLeftNode() {
         return leftNode;
     }
 
     public void setLeftNode(Node leftNode) {
+        leftNode.parent = this;
         this.leftNode = leftNode;
     }
 
@@ -56,6 +77,7 @@ public class Node {
     }
 
     public void setRightNode(Node rightNode) {
+        rightNode.parent = this;
         this.rightNode = rightNode;
     }
 }
