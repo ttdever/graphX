@@ -5,13 +5,22 @@ import java.util.Queue;
 
 public class Node {
 
-    private int value;
+    private final int value;
     private Node leftNode;
     private Node rightNode;
     private Node parent;
 
     public Node(int value) {
         this.value = value;
+    }
+
+    public static Node getTaskExampleTree() {
+        int[][] array = {{5}, {3, 7}, {2, 5, 1, 0}};
+        Node testNode = Node.createFromArray(array);
+        testNode.getRightNode().getRightNode().setRightNode(new Node(8));
+        testNode.getRightNode().getRightNode().getRightNode().setRightNode(new Node(5));
+        testNode.getRightNode().getRightNode().setLeftNode(new Node(2));
+        return testNode;
     }
 
     public static Node createFromArray(int[][] array) {

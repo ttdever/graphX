@@ -5,8 +5,8 @@ import org.openx.task.tree.classes.Node;
 
 public class Main {
     public static void main(String[] args) {
-        int[][] array = {{5}, {3, 7}, {2, 5, 1, 0}};
-        Node testNode = Node.createFromArray(array);
-        TreeAnalyzer.print(testNode, 0);
+        Node node1 = Node.getTaskExampleTree();
+        Node node2 = Node.createFromArray(new int[][] {{1}, {1,2}});
+        System.out.println(TreeAnalyzer.areNodesEqual(node1, node2));
     }
 }
